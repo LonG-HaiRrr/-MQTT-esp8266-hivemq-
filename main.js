@@ -176,3 +176,110 @@ window.onload = function () {
   updateButtons();
   renderButtonHistory();
 };
+
+
+
+
+
+
+// ==== Theme (Day/Night button with image bg) ====
+function setTheme(dark) {
+  if(dark){
+    document.body.classList.add('dark-mode');
+    document.body.classList.remove('light-mode');
+    document.getElementById('toggleContainer').classList.remove('checked');
+    document.getElementById('note-block').style.color = "#fff";
+  } else {
+    document.body.classList.remove('dark-mode');
+    document.body.classList.add('light-mode');
+    document.getElementById('toggleContainer').classList.add('checked');
+    document.getElementById('note-block').style.color = "#121212";
+  }
+  // Đổi màu ADC label, các chữ trên biểu đồ, gauge...
+  const adcLabels = document.querySelectorAll('.adcChartLabel');
+  adcLabels.forEach(el => {
+    el.style.color = dark ? '#b2c7ed' : '#236bc9';
+  });
+
+// 21/07/2025 
+  if (typeof adcLineChart !== "undefined") {
+  let isDark = dark;
+  let colorLine = isDark ? "#09f179ff" : "#8d0694ff"; //21/07/2025 màu lưới và chữ biểu đồ 
+  adcLineChart.options.plugins.title.color = colorLine;
+  adcLineChart.options.scales.x.grid.color = colorLine;
+  adcLineChart.options.scales.x.ticks.color = colorLine;
+  adcLineChart.options.scales.y.grid.color = colorLine;
+  adcLineChart.options.scales.y.ticks.color = colorLine;
+  adcLineChart.update();
+
+  // 21/07/2025 
+}
+
+}
+const THEME_KEY = "darkMode";
+function saveTheme(dark) { localStorage.setItem(THEME_KEY, dark ? "on" : "off"); }
+function restoreTheme() {
+  let isDark = true;
+  if (localStorage.getItem(THEME_KEY) === "off") isDark = false;
+  setTheme(isDark);
+  document.getElementById('toggle-theme-checkbox').checked = !isDark;
+}
+document.addEventListener('DOMContentLoaded', function () {
+  restoreTheme();
+  document.getElementById('toggle-theme-checkbox').addEventListener('change', function () {
+    let dark = !this.checked;
+    setTheme(dark);
+    saveTheme(dark);
+  });
+});
+
+function toggleButton(index) {
+  if (sending) return;
+  states[index] = !states[index];
+  updateButtons();
+
+  sending = true;
+  countdown = 30;
+  updateStatus(`Đang gửi nút ${index + 1} đến ThingSpeak, vui lòng chờ ${countdown}s`);
+
+  sendData(); // Gửi ngay lần đầu
+
+  // Gửi lặp mỗi 
+  sendInterval = setInterval(() => {
+    sendData();
+  }, 1000);
+
+  // Đếm ngược và unlock sau 15s
+  countdownTimer = setInterval(() => {
+    countdown -= 1;
+    if (countdown > 0) {
+      updateStatus(`Đang gửi nút ${index + 1} đến ThingSpeak, vui lòng chờ ${countdown}s (vui lòng chỉ bấm nút huỷ chờ khi đã thay đổi trạng thái nút)`);
+    } else {
+      clearInterval(sendInterval);
+      clearInterval(countdownTimer);
+      sending = false;
+      updateButtons();
+      updateStatus("Đang chờ thao tác...");
+    }
+  }, 1000);
+}
+
+
+
+
+const menuContainer = document.querySelector('.menu-container');
+
+menuContainer.addEventListener('click', function (e) {
+  // Nếu đã có class 'clicking', bỏ đi (toggle)
+  if(this.classList.contains('clicking')) {
+    this.classList.remove('clicking');
+  } else {
+    this.classList.add('clicking');
+  }
+  e.stopPropagation();
+});
+
+// Ấn ra ngoài thì dropdown ẩn đi
+window.addEventListener('click', function () {
+  menuContainer.classList.remove('clicking');
+});

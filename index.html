@@ -11,10 +11,31 @@
 </head>
 <body class="dark-mode">
 
-<div id="ts-info">
-  <div><span class="ts-info-label">Giao thức:</span> <span class="ts-info-value">MQTT (HiveMQ)</span></div>
-  <div><span class="ts-info-label">Thời gian:</span> <span class="ts-info-value" id="mqtt-time">--</span></div>
-  <div><span class="ts-info-label">Trạng thái MQTT:</span> <span class="ts-info-value" id="mqtt-status">--</span></div>
+<header class="thanh_header"> 
+
+<div class="menu-container" tabindex="0">
+  <i class="fa-solid fa-house icon_home fa-lg"></i>
+  <div class="dropdown-menu">
+    <a href="https://fontawesome.com/icons/github?f=brands&s=solid" target="_blank">Menu 1</a>
+    <a href="https://fontawesome.com/icons/github?f=brands&s=solid" target="_blank">Menu 2</a>
+    <a href="https://fontawesome.com/icons/github?f=brands&s=solid" target="_blank">Menu 3</a>
+  </div>
+</div>
+
+<div class="infor_container">
+  <i class="fa-solid fa-circle-info fa-lg"></i>
+  <div id="ts-info">
+    <div><span class="ts-info-label">Giao thức:</span> <span class="ts-info-value">MQTT (HiveMQ)</span></div>
+    <div><span class="ts-info-label">Thời gian:</span> <span class="ts-info-value" id="mqtt-time">--</span></div>
+    <div><span class="ts-info-label">Trạng thái MQTT:</span> <span class="ts-info-value" id="mqtt-status">--</span></div>
+    <a href="https://fontawesome.com/icons/github?f=brands&s=solid">Menu 3</a>
+  </div>
+</div>
+
+
+
+<div class="callme">
+  <i class="fa-solid fa-phone"></i>
 </div>
 
 <div class="toggle-visual" id="theme-toggle-visual" title="Đổi giao diện">
@@ -29,6 +50,13 @@
     </div>
   </label>
 </div>
+
+
+
+</header>
+
+
+
 
 <h2 id="ahihi">ESP8266 + MQTT HiveMQ</h2>
 <button id="btn1" class="btn btn-bat" onclick="toggleButton(0)">BẬT LED 1</button>
