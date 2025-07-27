@@ -94,14 +94,20 @@ function sendCommand() {
 }
 // ==== Nút điều khiển ====  
 function toggleButton(index) {
-  if (sending) return; // nếu muốn tránh bấm liên tục
+  if (sending) return;
+
   states[index] = !states[index];
   updateButtons();
-  sendCommand();
   
-  let action = states[index] ? "BẬT" : "TẮT";
-  updateStatus(`Đã gửi lệnh ${action} nút ${index + 1}.`);
+  // Gửi dữ liệu ngay
+  sendCommand();
+
+  // Không cần gửi lại, xóa countdown và interval
+  // Sau khi gửi xong có thể unlock ngay
+  sending = false;
+  updateButtons();
 }
+
 
 
 
@@ -233,36 +239,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-function toggleButton(index) {
-  if (sending) return;
-  states[index] = !states[index];
-  updateButtons();
 
-  sending = true;
-  countdown = 30;
-  updateStatus(`Đang gửi nút ${index + 1} đến ThingSpeak, vui lòng chờ ${countdown}s`);
-
-  sendData(); // Gửi ngay lần đầu
-
-  // Gửi lặp mỗi 
-  sendInterval = setInterval(() => {
-    sendData();
-  }, 1000);
-
-  // Đếm ngược và unlock sau 15s
-  countdownTimer = setInterval(() => {
-    countdown -= 1;
-    if (countdown > 0) {
-      updateStatus(`Đang gửi nút ${index + 1} đến ThingSpeak, vui lòng chờ ${countdown}s (vui lòng chỉ bấm nút huỷ chờ khi đã thay đổi trạng thái nút)`);
-    } else {
-      clearInterval(sendInterval);
-      clearInterval(countdownTimer);
-      sending = false;
-      updateButtons();
-      updateStatus("Đang chờ thao tác...");
-    }
-  }, 1000);
-}
 
 
 
@@ -283,3 +260,16 @@ menuContainer.addEventListener('click', function (e) {
 window.addEventListener('click', function () {
   menuContainer.classList.remove('clicking');
 });
+
+// ==== BỔ SUNG: Header co lại khi cuộn (CÓ THỂ XÓA NGUYÊN ĐOẠN NÀY BẤT KỲ LÚC NÀO) ====
+(function() {
+  const header = document.querySelector('.thanh_header');
+  if (!header) return;
+  function onScroll() {
+    if (window.scrollY > 0) header.classList.add('shrink');
+    else header.classList.remove('shrink');
+  }
+  window.addEventListener('scroll', onScroll);
+  // Khi muốn bỏ hoàn toàn chỉ việc xóa khối này
+})();
+// ==== Hết hiệu ứng header co lại ====

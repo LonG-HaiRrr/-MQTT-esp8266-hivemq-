@@ -23,12 +23,13 @@
 
   #ts-info {position: relative; top: 18px; left: 22px; text-align: left; font-size: 16px; color: #b9c1cc;background: rgba(25, 27, 34, 0.93);padding: 10px 22px 10px 16px; border-radius: 12px;z-index: 999;max-width: 285px;}
   .ts-info-label {color: #c3cade;} .ts-info-value {font-weight: 600;}
-
+/* chỉnh lại giao diện 27/07/2025 */
   .toggle-visual {
-    position: relative;
+     transform: scale(0.79); /* thu nhỏ scale xuống 79% */
     top: 16px;right: 24px;
     z-index: 999;width: 78px;
     height: 36px;cursor: pointer;}
+/* chỉnh lại giao diện 27/07/2025 */
   .toggle-inner {position: relative;width: 100%;height: 100%;border-radius: 20px;}
   .toggle-bg-night, .toggle-bg-day {position: absolute;width: 100%;height: 100%;left: 0;top: 0;transition: opacity 0.25s;}
   .toggle-bg-night { background-image: url('night.jpg'); background-size: cover; background-position: center; opacity: 1; border-radius: 20px;}
@@ -158,7 +159,9 @@ body:not(.dark-mode) #history-press-block h3 {
 body:not(.dark-mode) .pressTotal {
   color: #28707b;        /* xanh đậm hơn */
 }
-
+body:not(.dark-mode) .thanh_header {
+  background: #9d9a9a;
+}
 /* KHUNG BẢNG CHUNG */
 #history-press-table {
   width: 100%;
@@ -323,9 +326,8 @@ body:not(.dark-mode) .pressTotal {
 
 /* chỉnh lại giao diện 25/07/2025 */
 
-.thanh_header {
-  background: #e80796;
-}
+
+/* chỉnh lại giao diện 27/07/2025 */
 .icon_home {
   cursor: pointer;
   font-family: 'Times New Roman', Times, serif;
@@ -380,20 +382,21 @@ body:not(.dark-mode) .pressTotal {
   position: relative;
   display: inline-block;
   cursor: pointer;
+  margin: 0px 20px 0px 20px;
 }
 
 #ts-info {
   display: none;
   position: absolute; 
-  top: 120%; /* hiện khối bên dưới icon, tăng giảm cho hợp */
-  left: 0;
+  top: 290%; /* hiện khối bên dưới icon, tăng giảm cho hợp */
+  left: -120px; /* hoặc số âm lớn nhỏ tuỳ ý */
   background: #0d2358;
   color: #fff;
   font-size: 16px;
   padding: 14px 20px 14px 16px;
   border-radius: 14px;
   box-shadow: 0 8px 32px 0 rgba(44, 225, 24, 0.28);
-  z-index: 999;
+  z-index: 1;
   max-width: 295px;
   min-width: 210px;
   word-break: break-word;
@@ -404,3 +407,61 @@ body:not(.dark-mode) .pressTotal {
 }
 .ts-info-label { color: #b9c1cc; }
 .ts-info-value { font-weight: bold; color: #fff; }
+
+.thanh_header {
+  width: 100%;
+  height: 50px;
+  background: #340155; 
+  display: flex;
+  justify-content: space-between; /* chia 2 bên trái - phải */
+  align-items: center; /* canh giữa theo chiều dọc */
+  padding: 0 20px; /* có thể chỉnh padding 2 bên cho đẹp */
+  box-sizing: border-box;
+}
+
+
+/* Khối bên trái */
+.header_trai {
+  display: flex;
+  flex-direction: row; /* sắp từ trái sang phải */
+  align-items: center; /* canh giữa theo dọc */
+  gap: 10px; /* khoảng cách giữa các con, tùy chỉnh theo ý */
+}
+
+/* Khối bên phải */
+.header_phai {
+  display: flex;
+  flex-direction: row-reverse; /* sắp từ phải sang trái */
+  align-items: center; /* canh giữa theo dọc */
+  gap: 10px; /* khoảng cách giữa các con */
+}
+
+.callme {
+  margin: 0px 10px 0px 5px;
+}
+
+/* === BỔ SUNG: Hiệu ứng header co lại khi cuộn (XÓA NGUYÊN KHỐI NÀY NẾU KHÔNG DÙNG) === */
+.thanh_header {
+  position: fixed;
+  top: 0; left: 0; width: 100%;
+  height: 60px; /* chiều cao gốc */
+  z-index: 9999;
+  transition: height 0.3s ease, padding 0.3s ease;
+}
+.thanh_header.shrink { height: 40px; }
+
+.thanh_header .icon_home,
+.thanh_header .fa-phone,
+.thanh_header .fa-circle-info,
+.thanh_header .toggle-visual {
+  transition: transform 0.3s ease;
+}
+.thanh_header.shrink .icon_home,
+.thanh_header.shrink .fa-phone,
+.thanh_header.shrink .fa-circle-info,
+.thanh_header.shrink .toggle-visual {
+  transform: scale(0.9);
+}
+/* === Hết hiệu ứng header co lại === */
+
+/* chỉnh lại giao diện 27/07/2025 */
